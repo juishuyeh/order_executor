@@ -604,6 +604,6 @@ def format_quantity(quantity: Union[float, int, str]) -> str:
     except (ValueError, TypeError, InvalidOperation):
         raise ValueError(f"無法將數量 {quantity} 轉換為 Decimal 格式")
     
-    formatted_quantity = quantity_decimal.quantize(Decimal('0.001'), rounding='ROUND_HALF_UP')
+    formatted_quantity = quantity_decimal.quantize(Decimal('1'), rounding='ROUND_HALF_UP')
     
     return str(formatted_quantity)
