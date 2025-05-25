@@ -102,6 +102,10 @@ class SchwabAccount(Account):
             ValueError: 當數量小於等於 0 時
 
         """
+        # 假如 stock_id 是空的，則不執行任何操作
+        if stock_id is None or stock_id == '':
+            logging.warning('API: 股票代碼為空，無法創建訂單')
+            return
         try:
             pinfo = self.get_price_info([stock_id])
             limitup = float(pinfo[stock_id]['漲停價'])
@@ -316,6 +320,9 @@ class SchwabAccount(Account):
         Returns:
             Dict[str, Stock]: 股票代碼到股票資訊的映射
         """
+        if stock_ids is None or len(stock_ids) == 0:
+            logging.warning('API: 股票代碼為空，無法取得股票資訊')
+            return {}
         try:
             quote_response = self.client.get_quotes(
                 stock_ids, fields=self.client.Quote.Fields.QUOTE
