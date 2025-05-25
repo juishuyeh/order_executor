@@ -171,7 +171,8 @@ class SchwabAccount(Account):
         Note:
             美股無漲跌停限制，因此漲跌停價使用 52WeekHigh 和 52WeekLow 代替，若是要立刻買賣，可以使用 market_order 或 best_price_limit
         """
-        if stock_ids is None:
+        if not stock_ids:
+            logging.warning('API: 股票代碼為空，無法取得價格資訊')
             return {}
 
         try:
@@ -320,7 +321,7 @@ class SchwabAccount(Account):
         Returns:
             Dict[str, Stock]: 股票代碼到股票資訊的映射
         """
-        if stock_ids is None or len(stock_ids) == 0:
+        if not stock_ids:
             logging.warning('API: 股票代碼為空，無法取得股票資訊')
             return {}
         try:
