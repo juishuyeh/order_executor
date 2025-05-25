@@ -80,7 +80,6 @@ class SchwabAccount(Account):
         stock_id: str,
         quantity: int,
         price: Optional[float] = None,
-        odd_lot: bool = True,
         market_order: bool = False,
         best_price_limit: bool = False,
         order_cond: OrderCondition = OrderCondition.CASH,
@@ -100,7 +99,8 @@ class SchwabAccount(Account):
         Raises:
             ValueError: 當股票代碼不在價格資訊中時
             ValueError: 當數量小於等於 0 時
-
+        Note:
+            美股為零股，finlab order's quantity 單位 1 張，所以 quantity 要乘以 1000
         """
         # 假如 stock_id 是空的，則不執行任何操作
         if stock_id is None or stock_id == '':
@@ -117,7 +117,7 @@ class SchwabAccount(Account):
 
             if quantity <= 0:
                 raise ValueError(f'數量必須為正數，得到 {quantity}')
-
+            quantity *= 1000
             action_str = 'BUY' if action == Action.BUY else 'SELL'
 
             order = {
@@ -404,7 +404,7 @@ class SchwabAccount(Account):
         Returns:
             bool: 始終返回 True
         """
-        return True
+        return False
 
     def get_market(self) -> USMarket:
         """獲取市場資訊
